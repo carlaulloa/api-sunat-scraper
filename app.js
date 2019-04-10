@@ -23,25 +23,36 @@ function apiRouter() {
   router.get('/rucs', (req, res, next) => {
     let rucs = req.query.q;
     scraper.getInformation(rucs, (err, data) => {
-      cbInfo(err, data, res, next);
+      getInfo(scraper, rucs)
+      .then((data) => {
+        console.log(rucs, data);
+        res.status(200).json(data);
+      })
+      .catch(err => next(err));
     });
   });
   router.get('/rucs/:ruc', (req, res, next) => {
     let ruc = req.params.ruc;
-    scraper.getInformation(ruc, (err, data) => {
-      cbInfo(err, data, res, next);
-    });
+    getInfo(scraper, ruc)
+      .then((data) => {
+        console.log(ruc, data);
+        res.status(200).json(data);
+      })
+      .catch(err => next(err));
   });
-
   return router;
 }
 
-function cbInfo(err, data, res, next) {
-  if (err) {
-    next(err);
-  } else {
-    res.status(200).json(data);
-  }
+function getInfo(scrapper, ruc) {
+  return new Promise((resolve, reject) => {
+    scrapper.getInformation(ruc, (err, data) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(data);
+      }
+    });
+  });
 }
 
 app.use('/api', apiRouter());
@@ -54,7 +65,7 @@ app.use((err, req, res, next) => {
 });
 
 app.all('*', (req, res) => {
-  res.status(404).json({ message: 'Servicio no encontrado' });
+  res.status(404).json({ message: '404' });
 });
 
 app.listen(PORT, () => {
