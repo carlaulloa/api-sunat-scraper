@@ -1,0 +1,16 @@
+{
+  "name": "api-scrapper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Carla Ulloa",
+  "license": "ISC",
+  "dependencies": {
+    "install": "^0.12.2",
+    "npm": "^6.9.0",
+    "sunat-ruc-scraper2": "^1.0.1"
+  }
+}
