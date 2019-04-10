@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Page Title</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+  <div>
+    <input id="txtRuc" name="ruc">
+    <button id="buscar">Buscar</button>
+  </div>
+  <div>
+    <button id="buscarVarios">Buscar Varios</button>
+  </div>
+  <div>
+    <pre id="code">
+    </pre>
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      $('#buscar').on('click', function () {
+        var ruc = $('#txtRuc').val();
+        // un solo ruc
+        $.ajax({
+          url: 'http://localhost:3000/api/rucs/' + ruc,
+          type: 'GET',
+          success: function (data) {
+            var keys = Object.keys(data); // lista de atributos
+            if (keys.length > 0) {
+              console.log(keys, data);
+              $('#code').html(JSON.stringify(data, null, 2));
+            } else {
+              console.log('Vacio')
+            }
+          },
+          error: function (err) {
+            console.error(err);
+          }
+        });
+      });
+
+      $('#buscarVarios').on('click', function () {
+        // varios rucs
+        var rucs = ['10715093761', '20131312955'];
+        $.ajax({
+          url: 'http://localhost:3000/api/rucs?' + arrayToParam(rucs, 'q'),
+          type: 'GET',
+          success: function (data) {
+            data.forEach(function (item) {
+              var keys = Object.keys(item);
+              if (keys.length > 0) {
+                console.log(keys, item);
+                $('#code').html(JSON.stringify(data, null, 2));
+              }
+            });
+          },
+          error: function (err) {
+            console.error(err);
+          }
+        });
+      });
+
+      function arrayToParam(array, keyName) {
+        var params = '';
+        array.forEach(function (val, i) {
+          params += ((i === 0) ? '' : '&') + keyName + '=' + val;
+        });
+        return params;
+      }
+    });
+  </script>
+</body>
+
+</html>
