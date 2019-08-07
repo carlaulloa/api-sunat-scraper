@@ -1,5 +1,5 @@
 
-# API Scraper
+# API Scrapper
 
 ## Install
 ```
