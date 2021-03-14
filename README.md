@@ -1,5 +1,5 @@
 
-# API Sunar RUC Scraper
+# API Sunat RUC Scraper
 
 ## Install
 ```
